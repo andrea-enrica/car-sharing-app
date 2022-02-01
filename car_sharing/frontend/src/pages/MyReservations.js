@@ -13,22 +13,20 @@ import CarService from "../services/CarService";
 import IconButton from "@mui/material/IconButton";
 import ReservationService from "../services/ReservationService";
 
-
 export default function MyReservations() {
-    const id_user = JSON.parse(localStorage.getItem('item'))['id'];
+    const id_user = JSON.parse(sessionStorage.getItem('item'))['id'];
     const [reservationDetails,setReservationDetails] = useState([]);
     const [carDetails,setCarDetails] = useState([]);
     let countReservations=0;
 
     async function getReservationDetails(id_user) {
         await ReservationService.getAllReservationsByUserId(id_user).then(res => {
-            console.log("reservation details response", res)
             setReservationDetails(res.data);
         });
     }
 
     let reservationStatusChangeIcon =
-        (<IconButton onClick={() => {}} >
+        (<IconButton style={{color: "red"}} onClick={() => {}}  >
                 <ChangeCircleIcon/>
             </IconButton>
         );
@@ -65,11 +63,16 @@ export default function MyReservations() {
             });
         }
     }
+    let color;
 
-    //TODO: Think about availability in my cars. Something is not clear about when to press on availability button!
-
-    return (<Container component='section' id = "reservation" style={{minHeight: "20%", minWidth: "80%"}}
-                       sx={{marginBottom: '100px', marginTop: '100px'}}>
+    return (
+        <Container  component="section" sx={{
+            marginBottom: '35%',
+            marginTop:'7%',
+            marginLeft:'10%',
+            marginRight:'10%',
+            fontSize: 15,
+            color: "secondary"}}>
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: '80%' }} aria-label="simple table">
                     <TableHead>
@@ -112,7 +115,9 @@ export default function MyReservations() {
                                     <TableCell align="center">{row.end_date}</TableCell>
                                     <TableCell align="center">{row.total_reservation_price}</TableCell>
                                     <TableCell align="center" id="car-status">{row.status}</TableCell>
-                                    <TableCell align="center" onClick={() => handleClick(row)}>{reservationStatusChangeIcon}</TableCell>
+                                    <TableCell align="center" onClick={() => handleClick(row)} {...row.status === 'returned' ? color = '#e53935': color = '#96c267'}>{<IconButton style={{color: color}} onClick={() => {}}  >
+                                        <ChangeCircleIcon/>
+                                    </IconButton>}</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>

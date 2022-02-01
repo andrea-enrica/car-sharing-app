@@ -1,10 +1,6 @@
 package com.siemens.carsharing.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
 
 @Entity
 @Table(name = "reservations")
@@ -13,9 +9,9 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_reservation;
 
-    @Column(name="id_car")
+    @Column(name = "id_car")
     private Long idCar;
-    @Column(name="id_user")
+    @Column(name = "id_user")
     private Long idUser;
     private String city;
     private String start_date;
@@ -27,10 +23,28 @@ public class Reservation {
     private String address;
     private String status;
 
+
+    public Reservation(Long idCar, Long idUser, String city, String start_date, String start_time, String end_date, String end_time, Double total_reservation_price, String payment_method, String address, String status) {
+        this.idCar = idCar;
+        this.idUser = idUser;
+        this.city = city;
+        this.start_date = start_date;
+        this.start_time = start_time;
+        this.end_date = end_date;
+        this.end_time = end_time;
+        this.total_reservation_price = total_reservation_price;
+        this.payment_method = payment_method;
+        this.address = address;
+        this.status = status;
+    }
+
+    public Reservation() {}
+
     @Column
     public Long getId_reservation() {
         return id_reservation;
     }
+
     public void setId_reservation(Long id_reservation) {
         this.id_reservation = id_reservation;
     }
@@ -106,6 +120,7 @@ public class Reservation {
     public void setTotal_reservation_price(Double total_reservation_price) {
         this.total_reservation_price = total_reservation_price;
     }
+
     @Column
     public String getPayment_method() {
         return payment_method;
@@ -137,7 +152,7 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id_reservation=" + id_reservation +
-                ", id_car=" + idCar +
+                " id_car=" + idCar +
                 ", idUser=" + idUser +
                 ", city='" + city + '\'' +
                 ", start_date='" + start_date + '\'' +

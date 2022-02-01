@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,17 +9,27 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import {Snackbar} from '@material-ui/core';
-// import {FormControlLabel, Checkbox, Controller} from '@material-ui/core';
 import UserService from "../services/UserService";
 import {Alert} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export default function SignUp() {
     const [hasServerError, setHasServerError] = useState(false);
     let [isJustSaved, setIsJustSaved] = useState(false);
+    const {t, i18n} = useTranslation();
+    const [currentLanguage,setLanguage] =useState('');
+
+    useEffect(() => {
+        i18n
+            .changeLanguage(sessionStorage.getItem("state"))
+            .then(() => setLanguage(sessionStorage.getItem("state")))
+            .catch(err => console.log(err));
+        console.log(sessionStorage.getItem("state"))
+    },[])
 
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().required('First Name is required'),
@@ -43,10 +53,9 @@ export default function SignUp() {
 
     const {
         register,
-        // control,
         handleSubmit,
         setError,
-        formState: { errors }
+        formState: {errors}
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
@@ -73,14 +82,26 @@ export default function SignUp() {
     return (
         <Container component="section" maxWidth="xs" sx={{marginBottom: '100px'}}>
             <CssBaseline/>
-            <Box sx={{marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', color:'secondary'}}>
+            <Box sx={{
+                marginTop: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                color: 'secondary'
+            }}>
                 <Box className={'popUpMessages'}>
                     <Snackbar
                         open={isJustSaved}
-                        autoHideDuration={6000} onClose={() =>{setIsJustSaved(false); window.location.href='/login'}}
+                        autoHideDuration={6000} onClose={() => {
+                        setIsJustSaved(false);
+                        window.location.href = '/login'
+                    }}
                         anchorOrigin={{vertical: "top", horizontal: "center"}}
                     >
-                        <Alert onClose={() => {setIsJustSaved(false); window.location.href='/login'}} severity="success">
+                        <Alert onClose={() => {
+                            setIsJustSaved(false);
+                            window.location.href = '/login'
+                        }} severity="success">
                             {errors.apiError && <div>{errors.apiError?.message}</div>}
                         </Alert>
                     </Snackbar>
@@ -99,7 +120,7 @@ export default function SignUp() {
                 </Avatar>
 
                 <Typography color="secondary" component="h1" variant="h5">
-                    Sign up
+                    {t("sign up")}
                 </Typography>
 
                 <Box component="form" noValidate sx={{mt: 3}}>
@@ -110,7 +131,7 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="firstName"
-                                label="First Name"
+                                label={t("first name")}
                                 autoFocus
                                 color='secondary'
                                 {...register('firstName')}
@@ -125,7 +146,7 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="lastName"
-                                label="Last Name"
+                                label={t("last name")}
                                 name="lastName"
                                 color='secondary'
                                 {...register('lastName')}
@@ -140,7 +161,7 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 name="username"
-                                label="Username"
+                                label={t("username")}
                                 id="username"
                                 color='secondary'
                                 {...register('username')}
@@ -155,7 +176,7 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label={t("email address")}
                                 name="email"
                                 color='secondary'
                                 {...register('email')}
@@ -170,7 +191,7 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label={t("password")}
                                 type="password"
                                 id="password"
                                 color="secondary"
@@ -186,7 +207,7 @@ export default function SignUp() {
                                 required
                                 id="confirmPassword"
                                 name="confirmPassword"
-                                label="Confirm Password"
+                                label={t("confirm password")}
                                 type="password"
                                 fullWidth
                                 color='secondary'
@@ -231,7 +252,6 @@ export default function SignUp() {
                         {/*</Grid>*/}
                     </Grid>
 
-
                     <Button
                         type="submit"
                         fullWidth
@@ -239,13 +259,13 @@ export default function SignUp() {
                         onClick={handleSubmit(onSubmit)}
                         sx={{mt: 3, mb: 2}}
                     >
-                        Sign Up
+                        {t("sign up")}
                     </Button>
 
                     <Grid container sx={{marginTop: 2}}>
                         <Grid item>
                             <Link color='secondary' href="/login" variant="body2">
-                                Already have an account? Log in
+                                {t("already have an account?")}
                             </Link>
                         </Grid>
                     </Grid>

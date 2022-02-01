@@ -1,21 +1,16 @@
 import axios from "axios";
-import cors from "cors";
-import * as Path from "path";
 
 class FileService {
-
     upload(file, plate_number) {
         let formData = new FormData();
         formData.append('file', file);
-        let token
+        let token;
 
-        if(localStorage.getItem('item') != null)
-        {
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if(sessionStorage.getItem('item') != null) {
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
+        } else {
+            token = null;
         }
-        else
-            token = null
-
         axios.post("http://localhost:8080/pictures/platenumber",plate_number,{
             headers: {
                 "Content-Type": "application/json",
@@ -36,12 +31,12 @@ class FileService {
     }
     getFileName(plate_number){
         let token
-        if(localStorage.getItem('item') != null)
+        if(sessionStorage.getItem('item') != null)
         {
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
         }
         else
-            token = null
+            token = null;
 
         return axios.get("http://localhost:8080/pictures/files-by-plate-number/?plate_number=" + plate_number,{
             headers: {
@@ -52,14 +47,55 @@ class FileService {
             mode: 'no-cors'
         });
     }
-    getFileByName(filename){
-        let token
-        if(localStorage.getItem('item') != null)
+
+    getAllFilesByPlateNumber(plate_number){
+        let token;
+        if(sessionStorage.getItem('item') != null)
         {
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
         }
         else
-            token = null
+            token = null;
+
+        return axios.get("http://localhost:8080/pictures/all-files-by-plate-number/?plate_number=" + plate_number,{
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                'Authorization': 'Bearer ' + token
+            },
+            mode: 'no-cors'
+        });
+    }
+
+
+    getFilesByPlateNumber(plate_number){
+        let token;
+        if(sessionStorage.getItem('item') != null)
+        {
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
+        }
+        else
+            token = null;
+
+        return axios.get("http://localhost:8080/pictures/files-by-plate-number/?plate_number=" + plate_number,{
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                'Authorization': 'Bearer ' + token
+            },
+            mode: 'no-cors'
+        });
+    }
+
+
+    getFileByName(filename){
+        let token
+        if(sessionStorage.getItem('item') != null)
+        {
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
+        }
+        else
+            token = null;
         return axios.get("http://localhost:8080/pictures/files/" + filename,{
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -69,17 +105,5 @@ class FileService {
             mode: 'no-cors'
         });
     }
-    // getImage(){
-    //     return axios.get("http://localhost:8080/pictures/files/car.jpg",{
-    //         headers: {
-    //             "Content-Type": "multipart/form-data",
-    //             "Accept": "multipart/form-data",
-    //         },
-    //         mode: 'no-cors'
-    //     });
-    // }
-
 }
-
-
-    export default new FileService();
+export default new FileService();

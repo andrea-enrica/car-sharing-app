@@ -1,6 +1,6 @@
 import * as React from 'react';
 import "../App.css";
-import {alpha, styled, useTheme} from '@mui/material/styles';
+import {styled, useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -14,12 +14,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Link from "@mui/material/Link";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import {useState} from "react";
-import logo from '../images/carz.png';
+import {useEffect, useState} from "react";
+import logo from '../images/Sharingry-logos_black-crop.png';
 import AppFooter from "../components/AppFooter";
 import {useHistory} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+import SearchBar from "./SearchBar";
 
 const drawerWidth = 240;
 
@@ -38,46 +38,6 @@ const AppBar = styled(MuiAppBar, {
         }),
         marginRight: drawerWidth,
     }),
-}));
-
-const Search = styled('div')(({theme}) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.black, 0.05),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    }
-}));
-
-const SearchIconWrapper = styled('div')(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({theme}) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
 }));
 
 const BecomeHostButton = styled('button')(({theme}) => ({
@@ -104,8 +64,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function LayoutLoggedIn({children}) {
     const theme = useTheme();
+    const history = useHistory();
+    const {t, i18n} = useTranslation();
+    const [currentLanguage,setLanguage] =useState('');
     const [open, setOpen] = useState(false);
     const [isLogout, setIsLogout] = useState(false);
+
+    useEffect(() => {
+        i18n
+            .changeLanguage(sessionStorage.getItem("state"))
+            .then(() => setLanguage(sessionStorage.getItem("state")))
+            .catch(err => console.log(err));
+        console.log(sessionStorage.getItem("state"))
+    },[])
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -116,26 +87,21 @@ export default function LayoutLoggedIn({children}) {
     };
 
     const handleLogoutClick = () => {
-        localStorage.removeItem('item');
+        sessionStorage.removeItem('item');
         setIsLogout(true);
         window.location.href = '/home';
         return isLogout;
     }
-    const history = useHistory()
+
     const handleClick = (name) => {
-
-
-        if(name === 'My Reservations')
+        if(name === 'My reservations' || name === 'Rezervarile mele')
         {
-            history.push('/reservationTable')
+            history.push('/reservationTable');
         }
-        else if(name === 'My Cars')
+        else if(name === 'My cars' || name === 'Masinile mele')
         {
-
-            history.push('/myCars',)
-
+            history.push('/myCars');
         }
-
     }
 
     return (
@@ -148,24 +114,14 @@ export default function LayoutLoggedIn({children}) {
                             underline="none"
                             href="/home"
                             sx={{fontSize: 16, color: 'black', '&:hover': {
-                                    color: 'black'
-                                } }}
+                                    color: 'black'}
+                                }}
                         >
-                            <img src={logo} alt="logo"  width= "70px"
-                                 height= "50px"
-                            />
+                            <img src={logo} alt="logo"  width= "100px"/>
                         </Link>
                     </Typography>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon/>
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{'aria-label': 'search'}}
-                        />
-                    </Search>
 
+                    <SearchBar/>
                     <Box sx={{flexGrow: 1}}/>
 
                     <Typography>
@@ -174,7 +130,7 @@ export default function LayoutLoggedIn({children}) {
                             href="/addcar"
                         >
                             <BecomeHostButton onClick={() => {}}>
-                                Become a host
+                                {t("become a host")}
                             </BecomeHostButton>
                         </Link>
                     </Typography>
@@ -186,7 +142,7 @@ export default function LayoutLoggedIn({children}) {
                                  sx={{ ...(open && { display: 'none'}) }}
                     >
                         <Typography fontSize={16}>
-                            {JSON.parse(localStorage.getItem('item'))['username']}
+                            {JSON.parse(sessionStorage.getItem('item'))['username']}
                         </Typography>
                     </IconButton>
                 </Toolbar>
@@ -215,7 +171,7 @@ export default function LayoutLoggedIn({children}) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Profile', 'My Cars', 'My Reservations'].map((text, index) => (
+                    {[t("profile"), t("my cars"), t("my reservations")].map((text, index) => (
                         <ListItem button key={text} onClick={() => handleClick(text)}>
                             <ListItemText primary={text} />
                         </ListItem>

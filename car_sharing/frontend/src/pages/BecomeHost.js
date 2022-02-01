@@ -13,7 +13,7 @@ import UploadFiles from "../components/UploadFiles";
 import CarService from "../services/CarService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as Yup from "yup";
-import {useFieldArray, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import UploadFilesService from "../services/FileService"
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
@@ -22,6 +22,8 @@ import {citiesList} from "../data/Cities";
 import {manufacturerYearList} from "../data/ManufacturerYear";
 import {Snackbar} from "@material-ui/core";
 import {Alert} from "@mui/material";
+import {useTranslation} from "react-i18next";
+import '../assets/i18n/i18n';
 
 const styles = {
     headingStyle: {
@@ -35,12 +37,22 @@ const styles = {
 }
 
 export default function BecomeHost() {
+    const {t, i18n} = useTranslation();
+    const [currentLanguage,setLanguage] =useState('');
     let [hasServerError, setHasServerError] = useState(false);
     let [isJustSaved, setIsJustSaved] = useState(false);
     const [array, setArray] = useState([]);
     const carBrands = carBrandsList;
     const cities = citiesList;
     const manufacturerYear = manufacturerYearList;
+
+    useEffect(() => {
+        i18n
+            .changeLanguage(sessionStorage.getItem("state"))
+            .then(() => setLanguage(sessionStorage.getItem("state")))
+            .catch(err => console.log(err));
+        console.log(sessionStorage.getItem("state"))
+    },[])
 
     const callBackArray = (arrayFromChild) => {
         setArray([...array].concat(arrayFromChild));
@@ -67,8 +79,6 @@ export default function BecomeHost() {
                 'Invalid plate number format!'),
         description: Yup.string().required('Description is required!'),
         daily_rental_price: Yup.number().typeError('Price must be a number!').positive('Price must be grater than zero!').required('Daily rental price is required!'),
-        // file: Yup.array().test(value=> console.log(typeof(value))).required("You must upload at least one picture!"),
-        //TODO: fix the upload files validation when array is empty.
         available: '',
         status: ''
     });
@@ -86,25 +96,15 @@ export default function BecomeHost() {
         setHasServerError(false);
     }
 
-    // useEffect(() => {
-    //     if(array.length === 0) {
-    //         setError('fileError', {message:'You must upload at least one picture!'});
-    //         document.getElementById('uploadError').style.display= "flex";
-    //     }
-    //     else {
-    //         document.getElementById('uploadError').style.display= "none";
-    //     }
-    // }, [array])
-
     const onSubmit = data => {
         data.available = 'true';
         data.status = 'not booked';
 
-        if(JSON.parse(localStorage.getItem('item')) === null) {
+        if(JSON.parse(sessionStorage.getItem('item')) === null) {
             window.location.href ='/login';
         }
 
-        data.idUser = JSON.parse(localStorage.getItem('item'))['id'];
+        data.idUser = JSON.parse(sessionStorage.getItem('item'))['id'];
         CarService.addCarRequest(JSON.stringify(data))
             .then(() => {
                 setError('apiError', {message: "The car was successfully uploaded!"});
@@ -124,9 +124,11 @@ export default function BecomeHost() {
     };
 
     return (
-        <Container component="section" maxWidth="xs" sx={{marginBottom: '100px', width: 500,
+        <Container component="section" maxWidth="xs" sx={{
+            marginBottom: '100px', width: 500,
             fontSize: 15,
-            color: "secondary"}}>
+            color: "secondary"
+        }}>
             <CssBaseline/>
             <Box
                 sx={{
@@ -137,12 +139,15 @@ export default function BecomeHost() {
                 }}
             >
                 <Typography color="secondary" component="h1" variant="h5">
-                    Add a new car
+                    {t("add a new car")}
                 </Typography>
                 <Box>
                     <Snackbar
                         open={isJustSaved}
-                        autoHideDuration={6000} onClose={() =>{setIsJustSaved(false); window.location.href='/home'}}
+                        autoHideDuration={6000} onClose={() => {
+                        setIsJustSaved(false);
+                        window.location.href = '/home'
+                    }}
                         anchorOrigin={{vertical: "top", horizontal: "center"}}
                     >
                         <Alert onClose={() => {setIsJustSaved(false); window.location.href='/home'}} severity="success">
@@ -162,12 +167,12 @@ export default function BecomeHost() {
                 <Box component="form" noValidate autocomplete='off' sx={{mt: 3, }}>
                     <Grid container spacing={2} columnSpacing={{xs: 0, sm: 0, md: 0}}>
                         <Grid item xs={12} sm={8}>
-                            <h6>Where is your car located?</h6>
+                            <h6>{t("where is your car located")}</h6>
                             <TextField
                                 required
                                 fullWidth
                                 id="address"
-                                label="Address"
+                                label={t("address")}
                                 name="address"
                                 color='secondary'
                                 style={{width: 415}}
@@ -182,17 +187,17 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={8}>
-                            <h6>Car details</h6>
-                            <InputLabel required color='secondary' id="demo-simple-select-helper-label-city">City</InputLabel>
+                            <h6>{t("car details")}</h6>
+                            <InputLabel required color='secondary' id="demo-simple-select-helper-label-city">{t("city")}</InputLabel>
                             <Select
                                 labelId="label-city"
-                                id="city"
+                                id='city'
                                 value={validationSchema.city}
                                 defaultValue=""
-                                label="City"
+                                label="city"
                                 color='secondary'
                                 style={{width: 415}}
-                                name="city"
+                                name='city'
 
                                 {...register('city')}
                                 error={errors.city ? true : false}
@@ -207,13 +212,13 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={8}>
-                            <InputLabel required color='secondary' id="label-brand">Brand</InputLabel>
+                            <InputLabel required color='secondary' id="label-brand">{t("brand")}</InputLabel>
                             <Select
                                 labelId="label-brand"
                                 id="brand"
                                 value={validationSchema.brand}
                                 defaultValue=""
-                                label="Brand"
+                                label="brand"
                                 color='secondary'
                                 style={{width: 415}}
                                 name="brand"
@@ -235,7 +240,7 @@ export default function BecomeHost() {
                                 required
                                 fullWidth
                                 id="model"
-                                label="Model"
+                                label={t("model")}
                                 name="model"
                                 color='secondary'
                                 style={{width: 415}}
@@ -249,13 +254,13 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={5}>
-                            <InputLabel required color='secondary' id="label-Man-Year">Manufacturing year</InputLabel>
+                            <InputLabel required color='secondary' id="label-Man-Year">{t("manufacturing year")}</InputLabel>
                             <Select
                                 labelId="label-man-year"
                                 id="man_year"
                                 value={validationSchema.man_year}
                                 defaultValue=""
-                                label="Manufacturing year"
+                                label="man_year"
                                 style={{width: 170}}
                                 name="man_year"
                                 color='secondary'
@@ -263,7 +268,7 @@ export default function BecomeHost() {
                                 error={errors.man_year ? true : false}
                             >
                                 {manufacturerYear.map((item, index) => (
-                                    <MenuItem key={index} value={index+7}>{item}</MenuItem>
+                                    <MenuItem key={index} value={item}>{item}</MenuItem>
                                 ))}
                             </Select>
                             <Typography variant="inherit" color="red">
@@ -271,27 +276,27 @@ export default function BecomeHost() {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={5}>
-                            <InputLabel required color='secondary' id="label-seats">Number of seats</InputLabel>
+                            <InputLabel required color='secondary' id="label-seats">{t("number of seats")}</InputLabel>
                             <Select
                                 labelId="label-seats"
                                 id="seats"
                                 value={validationSchema.seats}
                                 defaultValue=""
-                                label="Seats"
+                                label="number of seats"
                                 style={{width: 240}}
                                 name="seats"
                                 color='secondary'
                                 {...register('seats')}
                                 error={errors.seats ? true : false}
                             >
-                                <MenuItem value={1}>2</MenuItem>
-                                <MenuItem value={2}>3</MenuItem>
-                                <MenuItem value={3}>4</MenuItem>
-                                <MenuItem value={4}>5</MenuItem>
-                                <MenuItem value={5}>6</MenuItem>
-                                <MenuItem value={6}>7</MenuItem>
-                                <MenuItem value={7}>8</MenuItem>
-                                <MenuItem value={8}>9</MenuItem>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
+                                <MenuItem value={7}>7</MenuItem>
+
 
                             </Select>
                             <Typography variant="inherit" color="red">
@@ -300,13 +305,13 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={5}>
-                            <InputLabel required color='secondary' id="label-body-type">Body type</InputLabel>
+                            <InputLabel required color='secondary' id="label-body-type">{t("body type")}</InputLabel>
                             <Select
                                 labelId="label-body-type"
                                 id="body_type"
                                 value={validationSchema.body_type}
                                 defaultValue=""
-                                label="Body type"
+                                label="body type"
                                 style={{width: 170}}
                                 name="body_type"
                                 color='secondary'
@@ -317,14 +322,14 @@ export default function BecomeHost() {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={1}>Family</MenuItem>
-                                <MenuItem value={2}>Sedan</MenuItem>
-                                <MenuItem value={3}>SUV</MenuItem>
-                                <MenuItem value={4}>MUV</MenuItem>
-                                <MenuItem value={5}>Coupe</MenuItem>
-                                <MenuItem value={6}>Hatchback</MenuItem>
-                                <MenuItem value={7}>Convertible</MenuItem>
-                                <MenuItem value={8}>Pickup Truck</MenuItem>
+                                <MenuItem value={"Family"}>Family</MenuItem>
+                                <MenuItem value={"Sedan"}>Sedan</MenuItem>
+                                <MenuItem value={"SUV"}>SUV</MenuItem>
+                                <MenuItem value={"MUV"}>MUV</MenuItem>
+                                <MenuItem value={"Coupe"}>Coupe</MenuItem>
+                                <MenuItem value={"Hatchback"}>Hatchback</MenuItem>
+                                <MenuItem value={"Convertible"}>Convertible</MenuItem>
+                                <MenuItem value={"Pickup Truck"}>Pickup Truck</MenuItem>
                             </Select>
 
                             <Typography variant="inherit" color="red">
@@ -333,13 +338,13 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={5}>
-                            <InputLabel color='secondary' required id="label-driving-license-category">License category</InputLabel>
+                            <InputLabel color='secondary' required id="label-driving-license-category">{t("licence")}</InputLabel>
                             <Select
                                 labelId="label-driving-license-category"
                                 id="driving_license_category"
                                 value={validationSchema.driving_license_category}
                                 defaultValue=""
-                                label="Driving license category"
+                                label="license"
                                 name="driving_license_category"
                                 style={{width: 240}}
                                 color='secondary'
@@ -347,14 +352,15 @@ export default function BecomeHost() {
                                 {...register('driving_license_category')}
                                 error={errors.driving_license_category ? true : false}
                             >
-                                <MenuItem value={1}>B1</MenuItem>
-                                <MenuItem value={2}>B</MenuItem>
-                                <MenuItem value={3}>BE</MenuItem>
-                                <MenuItem value={4}>C1</MenuItem>
-                                <MenuItem value={5}>C</MenuItem>
-                                <MenuItem value={6}>CE</MenuItem>
-                                <MenuItem value={7}>D1</MenuItem>
-                                <MenuItem value={8}>D</MenuItem>
+                                <MenuItem value={"A1"}>{"A1"}</MenuItem>
+                                <MenuItem value={"B1"}>{"B1"}</MenuItem>
+                                <MenuItem value={"A"}>{"A"}</MenuItem>
+                                <MenuItem value={"B"}>{"B"}</MenuItem>
+                                <MenuItem value={"BE"}>{"BE"}</MenuItem>
+                                <MenuItem value={"C"}>{"C"}</MenuItem>
+                                <MenuItem value={"CE"}>{"CE"}</MenuItem>
+                                <MenuItem value={"D"}>{"D"}</MenuItem>
+
                             </Select>
                             <Typography variant="inherit" color="red">
                                 {errors.driving_license_category?.message}
@@ -367,7 +373,7 @@ export default function BecomeHost() {
                                 fullWidth
                                 id="plate_number"
                                 value={validationSchema.plate_number}
-                                label="Plate number"
+                                label={t("plate number")}
                                 name="plate_number"
                                 color='secondary'
                                 style={{width: 415}}
@@ -385,7 +391,7 @@ export default function BecomeHost() {
                                 required
                                 fullWidth
                                 id="description"
-                                label="Description"
+                                label={t("description")}
                                 name="description"
                                 color='secondary'
                                 style={{width: 415}}
@@ -400,23 +406,17 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={8}>
-                            <h6 sx={styles.headingStyle} color='secondary'>Upload some relevant photos</h6>
+                            <h6 sx={styles.headingStyle} color='secondary'>{t("upload")}</h6>
                             <div>
                                 <UploadFiles parentCallback={callBackArray}/>
                                 <ul>
                                     {array.map((file, index) => (
-                                        // <div key={file.id}>
-                                            <li key={index}>
+                                        <li key={index}>
                                             <Box sx={{display: 'flex', flexGrow:1}}>
-                                                <InputLabel color='secondary' sx={styles.inputLabel}
-                                                            // id='file'
-                                                            // {...register(array, {required: true})}
-                                                            // error={errors.file ? "true" : "false"}
-                                                >{file.name}</InputLabel>
+                                                <InputLabel color='secondary' sx={styles.inputLabel}>{file.name}</InputLabel>
                                                 <CancelPresentationIcon onClick={() => handleDeletePictures(index)}/>
                                             </Box>
-                                            </li>
-                                            // </div>
+                                        </li>
                                     ))}
                                     <Typography sx={{display: 'none'}} id="uploadError" variant="inherit" color="red">{errors.fileError?.message}</Typography>
                                 </ul>
@@ -428,12 +428,12 @@ export default function BecomeHost() {
                         </Grid>
 
                         <Grid item xs={12} sm={8}>
-                            <h6 sx={styles.headingStyle}>Set the daily rental price in euro:</h6>
+                            <h6 sx={styles.headingStyle}>{t("set the daily price")}</h6>
                             <TextField
                                 required
                                 fullWidth
                                 id="daily_rental_price"
-                                label="Daily rental price"
+                                label={t("daily rental price")}
                                 name="daily_rental_price"
                                 color='secondary'
                                 style={{width: 415}}
@@ -453,7 +453,7 @@ export default function BecomeHost() {
                         onClick={handleSubmit(onSubmit)}
                         sx={{mt: 3, mb: 2}}
                     >
-                        Upload Car
+                        {t("upload car")}
                     </Button>
                 </Box>
             </Box>

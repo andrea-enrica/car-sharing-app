@@ -6,11 +6,10 @@ const CARD_SEND_ID_REST_API_URL= 'http://localhost:8080/cars/carGetById';
 const CAR_OF_USER_REST_API = 'http://localhost:8080/cars/id-user';
 
 class CarService {
-
     addCarRequest(item) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 
@@ -25,8 +24,8 @@ class CarService {
 
     cardDisplayRequest() {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 
@@ -42,8 +41,8 @@ class CarService {
 
     cardSendIdRequest(item) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 
@@ -58,8 +57,8 @@ class CarService {
 
     getCarOfUser(id_user) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 

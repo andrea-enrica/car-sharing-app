@@ -1,7 +1,5 @@
 package com.siemens.carsharing.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -52,6 +50,7 @@ public class Car implements Serializable {
     public Long getIdCar() {
         return idCar;
     }
+
     public void setIdCar(Long idCar) {
         this.idCar = idCar;
     }
@@ -60,6 +59,7 @@ public class Car implements Serializable {
     public String getModel() {
         return model;
     }
+
     public void setModel(String model) {
         this.model = model;
     }
@@ -68,6 +68,7 @@ public class Car implements Serializable {
     public String getBrand() {
         return brand;
     }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
@@ -76,6 +77,7 @@ public class Car implements Serializable {
     public String getCity() {
         return city;
     }
+
     public void setCity(String city) {
         this.city = city;
     }
@@ -84,6 +86,7 @@ public class Car implements Serializable {
     public long getIdUser() {
         return idUser;
     }
+
     public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
@@ -92,6 +95,7 @@ public class Car implements Serializable {
     public int getMan_year() {
         return man_year;
     }
+
     public void setMan_year(int man_year) {
         this.man_year = man_year;
     }
@@ -100,6 +104,7 @@ public class Car implements Serializable {
     public short getSeats() {
         return seats;
     }
+
     public void setSeats(short seats) {
         this.seats = seats;
     }
@@ -108,6 +113,7 @@ public class Car implements Serializable {
     public String getBody_type() {
         return body_type;
     }
+
     public void setBody_type(String body_type) {
         this.body_type = body_type;
     }
@@ -116,6 +122,7 @@ public class Car implements Serializable {
     public String getDriving_license_category() {
         return driving_license_category;
     }
+
     public void setDriving_license_category(String driving_license_category) {
         this.driving_license_category = driving_license_category;
     }
@@ -124,6 +131,7 @@ public class Car implements Serializable {
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -132,6 +140,7 @@ public class Car implements Serializable {
     public String getPlate_number() {
         return plate_number;
     }
+
     public void setPlate_number(String plate_number) {
         this.plate_number = plate_number;
     }
@@ -140,6 +149,7 @@ public class Car implements Serializable {
     public String getDaily_rental_price() {
         return daily_rental_price;
     }
+
     public void setDaily_rental_price(String daily_rental_price) {
         this.daily_rental_price = daily_rental_price;
     }
@@ -148,6 +158,7 @@ public class Car implements Serializable {
     public String getAvailable() {
         return available;
     }
+
     public void setAvailable(String available) {
         this.available = available;
     }

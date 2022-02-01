@@ -6,6 +6,7 @@ import com.siemens.carsharing.repository.UserRepository;
 import com.siemens.carsharing.service.UserService;
 import org.hibernate.annotations.GeneratorType;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,13 +30,19 @@ public class UserController {
         return userService.saveUser(userData);
     }
 
+    @GetMapping("/userById")
+    public UserData getUserById(final @Param("id_user") Long id_user) {
+        return userService.getUserById(id_user);
+    }
+
     @GetMapping("/userByIdCar")
     public User getUserByIdCar(final @Param("id_car") Long id_car) {
         return userRepository.findUserByIdCar(id_car);
     }
 
-    @GetMapping("/userById")
-    public UserData getUserById(final @Param("id_user") Long id_user) {
-        return userService.getUserById(id_user);
+    @DeleteMapping("/userByUsername")
+    @Transactional
+    public void deleteUserByUsername(final @Param("username") String username) {
+        userRepository.deleteByUsername(username);
     }
 }

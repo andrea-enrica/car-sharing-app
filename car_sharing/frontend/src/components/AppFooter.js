@@ -4,16 +4,20 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import facebookIcon from '../images/facebook.png';
 import instagramIcon from '../images/instagram.png';
 import twitterIcon from '../images/twitter.png';
+import {useTranslation} from "react-i18next";
+import {useState} from "react";
+import LanguageIcon from '@mui/icons-material/Language';
+import Button from "@mui/material/Button";
+import '../assets/i18n/i18n';
 
 function Copyright() {
     return (
         <React.Fragment>
             {'© '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link color="inherit" href="#">
                 Car Sharing
             </Link>{' '}
             {new Date().getFullYear()}
@@ -30,21 +34,39 @@ const iconStyle = {
     mr: 1,
     '&:hover': {
         bgcolor: 'dark',
+
     },
 };
 
-const LANGUAGES = [
-    {
-        code: 'en-US',
-        name: 'English',
-    },
-    {
-        code: 'ro',
-        name: 'Romanian',
-    },
-];
-
 export default function AppFooter() {
+
+    const {t, i18n} = useTranslation();
+    const [currentLanguage,setLanguage] =useState('en');
+    const [prevState, setPrevState] = useState("true");
+
+    const changeLanguage = () => {
+        if(sessionStorage.getItem("state") === "en" && prevState === "true")
+        {
+            i18n
+                .changeLanguage("ro")
+                .then(() => setLanguage("ro"))
+                .catch(err => console.log(err));
+
+            setPrevState("false");
+            sessionStorage.setItem("state","ro")
+        }
+        else
+        {
+            i18n
+                .changeLanguage("en")
+                .then(() => setLanguage("en"))
+                .catch(err => console.log(err));
+
+            setPrevState("true");
+            sessionStorage.setItem("state","en");
+        }
+    };
+
     return (
         <Typography
             component="footer"
@@ -104,21 +126,13 @@ export default function AppFooter() {
                         <Typography variant="h6" marked="left" gutterBottom>
                             Language
                         </Typography>
-                        <TextField
-                            select
-                            size="medium"
-                            variant="standard"
-                            SelectProps={{
-                                native: true,
-                            }}
-                            sx={{ mt: 1, width: 150 }}
+                        <Button
+                            variant="contained"
+                            onClick={() => changeLanguage()}
                         >
-                            {LANGUAGES.map((language) => (
-                                <option value={language.code} key={language.code}>
-                                    {language.name}
-                                </option>
-                            ))}
-                        </TextField>
+                            <LanguageIcon > </LanguageIcon>
+                            {sessionStorage.getItem("state")}
+                        </Button>
                     </Grid>
                     <Grid item>
                         <Typography variant="caption" sx={{ml: 2}}>

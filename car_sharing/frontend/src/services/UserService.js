@@ -25,8 +25,8 @@ class UserService {
 
     getUserByIdRequest(id) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 
@@ -42,8 +42,8 @@ class UserService {
 
     getUserByIdCarRequest(id_car) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 

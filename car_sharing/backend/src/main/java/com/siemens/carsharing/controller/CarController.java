@@ -3,6 +3,7 @@ package com.siemens.carsharing.controller;
 import com.siemens.carsharing.dto.CarData;
 import com.siemens.carsharing.model.Car;
 import com.siemens.carsharing.service.CarService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,10 +18,14 @@ public class CarController {
     private CarService carService;
 
     @PostMapping("/car")
-    public CarData saveCar(final @RequestBody CarData carData){return carService.saveCar(carData);}
+    public CarData saveCar(final @RequestBody CarData carData) {
+        return carService.saveCar(carData);
+    }
 
     @GetMapping("/carget")
-    public List<Car> getCar(){return carService.getAllCars();}
+    public List<Car> getCar() {
+        return carService.getAllCars();
+    }
 
     @GetMapping("/carGetById")
     public CarData getCarById(@RequestParam("id_car") Long id_car) {
@@ -28,5 +33,19 @@ public class CarController {
     }
 
     @GetMapping("/id-user")
-    public List<Car> getCarsByIdUser(@RequestParam("id_user") Long id_user){return carService.findCarByIdUser(id_user);}
+    public List<Car> getCarsByIdUser(@RequestParam("id_user") Long id_user) {
+        return carService.findCarByIdUser(id_user);
+    }
+
+
+    @GetMapping("/search")
+    public List<Car> searchProducts(@RequestParam("keyword") String keyword, Model model) {
+
+        List<Car> searchResult = carService.search(keyword);
+
+        return searchResult;
+
+    }
+
+
 }

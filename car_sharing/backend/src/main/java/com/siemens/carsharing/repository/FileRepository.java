@@ -14,4 +14,8 @@ public interface FileRepository extends JpaRepository<File, String> {
     @Query(value = "SELECT file.name FROM file WHERE file.plate_number = ?1 LIMIT 1",
             nativeQuery = true)
     List<String> findAllByPlate_number(String plate_number);
+
+    @Query(value = "SELECT file.name FROM file WHERE file.plate_number = ?1 ",
+            nativeQuery = true)
+    List<String> findAllFilesByPlate_number(String plate_number);
 }

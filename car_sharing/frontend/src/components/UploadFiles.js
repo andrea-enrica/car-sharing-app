@@ -15,9 +15,9 @@ const UploadFiles = ({parentCallback}) => {
 
         let hasError = false;
         Array.from(files).forEach(file => {
-            if (!/^.*[jpg|JPG|png|PNG|jpeg|JPEG]$/.test(file.name) || file.size > 6000000) {
+            if (!/^.*[jpg|JPG|png|PNG|jpeg|JPEG]$/.test(file.name) || file.size > 52428800) {
                 hasError = true;
-                setError('file', {message: "File does not supported!"});
+                setError('file', {message: "File is not supported!"});
                 document.getElementById("error").style.display = 'flex';
                 return false;
             } else {
@@ -33,6 +33,7 @@ const UploadFiles = ({parentCallback}) => {
     const handleClick = () => {
         const selectedFileInput = document.getElementById('selectedFile');
         selectedFileInput.click();
+
         document.getElementById("error").style.display = 'none';
     }
 

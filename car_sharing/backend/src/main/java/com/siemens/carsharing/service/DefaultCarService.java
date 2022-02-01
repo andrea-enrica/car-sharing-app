@@ -1,19 +1,15 @@
 package com.siemens.carsharing.service;
 
 import com.siemens.carsharing.dto.CarData;
-import com.siemens.carsharing.dto.UserData;
 import com.siemens.carsharing.model.Car;
 import com.siemens.carsharing.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @Service("carService")
-public class DefaultCarService implements CarService{
+public class DefaultCarService implements CarService {
     @Autowired
     private CarRepository carRepository;
 
@@ -36,6 +32,11 @@ public class DefaultCarService implements CarService{
     @Override
     public CarData getCarById(Long carId) {
         return populateCarData(carRepository.getById(carId));
+    }
+
+    @Override
+    public List<Car> search(String keyword) {
+        return carRepository.findCarByKeyword(keyword);
     }
 
     @Override

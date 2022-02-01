@@ -5,24 +5,21 @@ import com.siemens.carsharing.model.Reservation;
 import com.siemens.carsharing.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("reservationsService")
 public class DefaultReservationService implements ReservationService {
-    @Autowired
-    private ReservationRepository reservationRepository;
+
+    private final ReservationRepository reservationRepository;
+
+    public DefaultReservationService(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
 
     @Override
     public ReservationData saveReservation(ReservationData reservationData) {
         Reservation reservationModel = populateReservationEntity(reservationData);
         return populateReservationData(reservationRepository.save(reservationModel));
-    }
-
-    @Override
-    public boolean deleteReservation(Long reservationId) {
-        return false;
     }
 
     @Override
@@ -73,15 +70,9 @@ public class DefaultReservationService implements ReservationService {
         return reservation;
     }
 
-     @Override public List<Reservation> findReservationByIdCarAndStatus(final Long id_car,String status){
-        return reservationRepository.findReservationByIdCarAndStatus(id_car,status);
-    }
-
     @Override
     public List<Reservation> findReservationByIdCar(Long id_car) {
         return reservationRepository.findReservationByIdCar(id_car);
     }
-
-    ;
 }
 

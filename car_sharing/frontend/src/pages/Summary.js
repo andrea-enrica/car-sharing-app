@@ -6,12 +6,23 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar} from '@material-ui/core';
+import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from '@material-ui/core';
 import {useHistory, useLocation} from "react-router-dom";
 import ReservationService from '../services/ReservationService';
 import CarService from "../services/CarService";
 import MailService from "../services/MailService";
 import UserService from "../services/UserService";
+import {styled} from "@mui/styles";
+
+const StyledButton = styled(Button)(({theme}) => ({
+    backgroundColor: '#f2f2f2',
+    '&:hover': {
+        backgroundColor: "gray",
+    },
+    width: '40%',
+    border: 'none',
+    borderRadius: 5,
+}));
 
 export default function Summary() {
     const history = useHistory();
@@ -54,18 +65,18 @@ export default function Summary() {
     }
 
     const customerEmailDetails = {
-         city: data.city,
-         address: data.address,
-         start_date: data.start_date,
-         start_time: data.start_time,
-         end_date: data.end_date,
-         end_time: data.end_time,
-         model: data.model,
-         brand: data.brand,
-         plate_number: data.plate_number,
-         seats: data.seats,
-         total_reservation_price: data.total_reservation_price,
-     }
+        city: data.city,
+        address: data.address,
+        start_date: data.start_date,
+        start_time: data.start_time,
+        end_date: data.end_date,
+        end_time: data.end_time,
+        model: data.model,
+        brand: data.brand,
+        plate_number: data.plate_number,
+        seats: data.seats,
+        total_reservation_price: data.total_reservation_price,
+    }
 
     const hostEmailDetails = {
         start_date: data.start_date,
@@ -107,188 +118,180 @@ export default function Summary() {
     }
 
     return (
-        <Container component="section" maxWidth="xs" sx={{marginTop: '8%', marginBottom: '100px', fontSize: 15,
-            color: "secondary"}}>
+        <Container component="section" maxWidth="xs" sx={{marginTop: '8%', marginBottom: '100px', fontSize: 15}}>
             <CssBaseline/>
-                <Typography color="secondary" component="h1" variant="h5" align='center'>
-                   Summary
-                </Typography>
+            <Typography color="secondary" component="h1" variant="h5" align='center'>
+                Summary
+            </Typography>
 
-                <Box component="form" noValidate sx={{mt: 3}}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="carBrand"
-                                label="Car Brand"
-                                id="carBrand"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.brand}
-                            />
+            <Box component="form" noValidate sx={{mt: 3}}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="carBrand"
+                            label="Car Brand"
+                            id="carBrand"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.brand}
+                        />
 
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="carModel"
-                                required
-                                fullWidth
-                                id="carModel"
-                                label="Car Model"
-                                autoFocus
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.model}
-                            />
-
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-
-                                required
-                                fullWidth
-                                id="plateNumber"
-                                label="Plate Number"
-                                name="plateNumber"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.plate_number}
-                            />
-
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="carAddress"
-                                label="Car address"
-                                name="carAddress"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.city + ",\n" + data.address}
-                            />
-
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="totalPrice"
-                                label="Total price to pay"
-                                type="totalPrice"
-                                id="totalPrice"
-                                color="secondary"
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.total_reservation_price}
-                            />
-
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                id="reservationStartDate"
-                                label="Reservation start date"
-                                name="reservationStartDate"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.start_date}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                id="reservationStartTime"
-                                label="Reservation start time"
-                                name="reservationStartTime"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.start_time}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                id="reservationEndDate"
-                                label="Reservation end date"
-                                name="reservationEndDate"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.end_date}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                id="reservationStartDate"
-                                label="Reservation end time"
-                                name="reservationEndTime"
-                                color='secondary'
-                                inputProps={
-                                    { readOnly: true, }
-                                }
-                                value = {data.end_time}
-                            />
-                        </Grid>
                     </Grid>
-
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Choose the payment method</FormLabel>
-                        <RadioGroup
-                            aria-label="paymentMethod"
-                            defaultValue="cash"
-                            name="radio-buttons-group"
-                        >
-                            <FormControlLabel value="cash" control={<Radio />} label="Cash" onChange={handleChange}/>
-                            <FormControlLabel value="creditCard" control={<Radio />} label="Credit card"  onChange={handleChange} />
-
-                        </RadioGroup>
-                    </FormControl>
-                    <Box  sx={{
-                        marginTop: 5,
-                        marginBottom: 5,
-                        marginLeft: '20%',
-                        marginRight: '20%',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                    }}>
-
-                        <Button
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            name="carModel"
+                            required
                             fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2, padding: '10%'}}
-                            onClick={() => handleCancelClick()}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
+                            id="carModel"
+                            label="Car Model"
+                            autoFocus
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.model}
+                        />
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+
+                            required
                             fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2, padding: '10%'}}
-                            onClick={() => handleOnClick(reservationDetails)}
-                        >
-                            Pay
-                        </Button>
-                    </Box>
+                            id="plateNumber"
+                            label="Plate Number"
+                            name="plateNumber"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.plate_number}
+                        />
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            id="carAddress"
+                            label="Car address"
+                            name="carAddress"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.city + ",\n" + data.address}
+                        />
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="totalPrice"
+                            label="Total price to pay"
+                            type="totalPrice"
+                            id="totalPrice"
+                            color="secondary"
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.total_reservation_price}
+                        />
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="reservationStartDate"
+                            label="Reservation start date"
+                            name="reservationStartDate"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.start_date}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="reservationStartTime"
+                            label="Reservation start time"
+                            name="reservationStartTime"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.start_time}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="reservationEndDate"
+                            label="Reservation end date"
+                            name="reservationEndDate"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.end_date}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="reservationStartDate"
+                            label="Reservation end time"
+                            name="reservationEndTime"
+                            color='secondary'
+                            inputProps={
+                                { readOnly: true, }
+                            }
+                            value = {data.end_time}
+                        />
+                    </Grid>
+                </Grid>
+
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Choose the payment method</FormLabel>
+                    <RadioGroup
+                        aria-label="paymentMethod"
+                        defaultValue="cash"
+                        name="radio-buttons-group"
+                    >
+                        <FormControlLabel value="cash" control={<Radio />} label="Cash" onChange={handleChange}/>
+                        <FormControlLabel value="creditCard" control={<Radio />} label="Credit card"  onChange={handleChange} />
+
+                    </RadioGroup>
+                </FormControl>
+                <Box sx={{
+                    marginTop: 5,
+                    marginBottom: 5,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}>
+                    <StyledButton
+                        variant="contained"
+                        onClick={() => handleCancelClick()}
+                    >
+                        Cancel
+                    </StyledButton>
+                    <StyledButton
+                        variant="contained"
+                        type="submit"
+                        onClick={() => handleOnClick(reservationDetails)}
+                    >
+                        Pay
+                    </StyledButton>
                 </Box>
+            </Box>
         </Container>
     );
 }

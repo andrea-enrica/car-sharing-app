@@ -11,8 +11,7 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(Long id, String firstName, String lastName, String email, String password, String username) {
-        this.id = id;
+    public UserData(String firstName, String lastName, String email, String password, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

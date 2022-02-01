@@ -41,6 +41,12 @@ public class FileController {
         return storageService.findAllByPlate_number(plateNumber);
     }
 
+    @GetMapping("/all-files-by-plate-number")
+    public List<String> getAllFilesByPlateNumber(@RequestParam("plate_number") String plateNumber) {
+        return storageService.findAllFilesByPlate_number(plateNumber);
+    }
+
+
     @PostMapping("/platenumber")
     public void getPlateNumber(@RequestBody Map<String, Object> plate_number) {
         String message = "";

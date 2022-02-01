@@ -14,7 +14,6 @@ import ReservationComplete from "./pages/ReservationComplete";
 import MyReservations from "./pages/MyReservations";
 import MyCars from "./pages/MyCars";
 import ReservationError from "./pages/ReservationError";
-
 const theme = createTheme({
     typography: {
         fontFamily: ['Playfair+Display', 'Source+Sans+Pro'].join(',')
@@ -28,16 +27,6 @@ const theme = createTheme({
         }
     }
 });
-
-function clearStorage() {
-    let session = sessionStorage.getItem('ref');
-    if (session === null) {
-        localStorage.removeItem('item');
-    }
-    sessionStorage.setItem('ref', 1);
-}
-
-window.addEventListener('load', clearStorage);
 
 const LogInLayout = () => {
     return (
@@ -88,10 +77,10 @@ const LoggedInLayout = () => {
                 <Route path="/carDetails">
                     <CarDetails/>
                 </Route>
-                <Route path = "/summary">
+                <Route path="/summary">
                     <Summary/>
                 </Route>
-                <Route  path="/reservationComplete">
+                <Route path="/reservationComplete">
                     <ReservationComplete/>
                 </Route>
                 <Route  path="/reservationError">
@@ -100,7 +89,7 @@ const LoggedInLayout = () => {
                 <Route path = "/reservationTable">
                     <MyReservations/>
                 </Route>
-                <Route path = "/myCars">
+                <Route path="/myCars">
                     <MyCars/>
                 </Route>
             </Switch>
@@ -109,9 +98,7 @@ const LoggedInLayout = () => {
 }
 
 function LoggedInStatus() {
-    const isUser = localStorage.getItem('item');
-    console.log("exista user", isUser);
-
+    const isUser = sessionStorage.getItem('item');
     if(isUser !== null) {
         return <LoggedInLayout/>
     } else {

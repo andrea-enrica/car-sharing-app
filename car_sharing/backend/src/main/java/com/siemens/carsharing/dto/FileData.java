@@ -1,7 +1,5 @@
 package com.siemens.carsharing.dto;
 
-import java.io.InputStream;
-
 public class FileData {
     private Long id_file;
     private String plate_number;

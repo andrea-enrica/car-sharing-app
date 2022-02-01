@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,15 +10,25 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import UserService from "../services/UserService";
 import {Snackbar} from "@material-ui/core";
 import {Alert} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export default function LogIn() {
     const [hasServerError, setHasServerError] = useState(false);
+    const {t, i18n} = useTranslation();
+    const [currentLanguage,setLanguage] =useState('');
 
+    useEffect(() => {
+        i18n
+            .changeLanguage(sessionStorage.getItem("state"))
+            .then(() => setLanguage(sessionStorage.getItem("state")))
+            .catch(err => console.log(err));
+        console.log(sessionStorage.getItem("state"))
+    },[])
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Username is required')
@@ -34,17 +44,16 @@ export default function LogIn() {
         register,
         handleSubmit,
         setError,
-        formState: { errors }
+        formState: {errors}
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
 
     const onSubmit = (data, event) => {
         event.preventDefault();
-
         UserService.logInRequest(JSON.stringify(data))
             .then(response => {
-                localStorage.setItem('item', JSON.stringify(response.data));
+                sessionStorage.setItem('item', JSON.stringify(response.data));
                 window.location.href = '/home';
             })
             .catch(err => {
@@ -62,7 +71,13 @@ export default function LogIn() {
     return (
         <Container component="section" maxWidth="xs" sx={{marginBottom: '100px'}}>
             <CssBaseline/>
-            <Box sx={{marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'secondary'}}>
+            <Box sx={{
+                marginTop: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                color: 'secondary'
+            }}>
                 <Box>
                     <Snackbar open={hasServerError}
                               autoHideDuration={6000} onClose={() => clearErrorState()}
@@ -79,7 +94,7 @@ export default function LogIn() {
                 </Avatar>
 
                 <Typography color="secondary" component="h1" variant="h5">
-                    Log in
+                    {t("log in")}
                 </Typography>
 
                 <Box component="form" noValidate sx={{mt: 3}}>
@@ -89,7 +104,7 @@ export default function LogIn() {
                                 required
                                 fullWidth
                                 name="username"
-                                label="Username"
+                                label={t("username")}
                                 id="username"
                                 color='secondary'
                                 {...register('username')}
@@ -99,12 +114,12 @@ export default function LogIn() {
                                 {errors.username?.message}
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} >
+                        <Grid item xs={12}>
                             <TextField
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label={t("password")}
                                 type="password"
                                 id="password"
                                 color='secondary'
@@ -124,18 +139,18 @@ export default function LogIn() {
                         onClick={handleSubmit(onSubmit)}
                         sx={{mt: 3, mb: 2}}
                     >
-                        Log In
+                        {t("log in")}
                     </Button>
 
                     <Grid container>
                         <Grid item xs>
                             <Link color={'secondary'} href="#" variant="body2">
-                                Forgot password?
+                                {t("forgot password?")}
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link color={'secondary'} href="/signup" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                                {t("don't have an account?")}
                             </Link>
                         </Grid>
                     </Grid>

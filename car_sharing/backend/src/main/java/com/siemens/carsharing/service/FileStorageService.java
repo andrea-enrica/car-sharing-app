@@ -21,4 +21,5 @@ public interface FileStorageService {
     List<String> findAllByPlate_number(String plate_number);
     Stream<Path> loadAll();
     Resource loadFileAsResource(String filename) throws IOException;
+    List<String> findAllFilesByPlate_number(String plate_number);
 }

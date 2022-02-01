@@ -7,13 +7,12 @@ class UploadFilesService {
         formData.append('file', file);
 
         let token
-        console.log("LOCAL STORAGE = " + localStorage.getItem('item'))
-        if(localStorage.getItem('item') != null)
+        if(sessionStorage.getItem('item') != null)
         {
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
         }
         else
-            token = null
+            token = null;
 
         axios.post("http://localhost:8080/pictures/platenumber",plate_number,{
             headers: {
@@ -31,10 +30,6 @@ class UploadFilesService {
             },
             mode: 'no-cors'
         }).then(response => console.log(response.data));
-
     }
-
 }
-
-
-    export default new UploadFilesService();
+export default new UploadFilesService();

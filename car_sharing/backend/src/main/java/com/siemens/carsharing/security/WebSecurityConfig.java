@@ -63,8 +63,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cars/carget").permitAll()
                 .antMatchers("/cars/carGetById").permitAll()
                 .antMatchers("/cars/getCarId").permitAll()
+                .antMatchers("/cars/search/**").permitAll()
                 .antMatchers("/pictures/files/{filename:.+}").permitAll()
                 .antMatchers("/uploads/{filename:.+}").permitAll()
+                .antMatchers("/pictures/files-by-plate-number/").permitAll()
+                .antMatchers("/pictures/all-files-by-plate-number/").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

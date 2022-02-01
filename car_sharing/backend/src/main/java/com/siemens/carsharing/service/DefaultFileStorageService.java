@@ -78,6 +78,13 @@ public class DefaultFileStorageService implements FileStorageService {
         return fileRepository.findAllByPlate_number(plate_number);
     }
 
+
+    @Override
+    public List<String> findAllFilesByPlate_number(String plate_number) {
+        //System.out.println("URL = " + fileRepository.findAllByPlate_number(plate_number).get(0).getUrl());
+        return fileRepository.findAllFilesByPlate_number(plate_number);
+    }
+
     @Override
     public Stream<Path> loadAll() {
         try {

@@ -2,7 +2,6 @@
 import emailjs from '@emailjs/browser';
 
 class MailService {
-
     sendMailToCustomerRequest(customerEmailDetails, host_name, host_mail, hostEmailDetails, customer_name) {
         let customerMail, username;
         let service_id = "service_a3vii1u";
@@ -13,9 +12,9 @@ class MailService {
             emailjs.init("user_EAUpaMA6L7AnFVj5QKF62");
         })();
 
-        if (localStorage.getItem('item') != null) {
-            customerMail = JSON.parse(localStorage.getItem('item'))['email'];
-            username = JSON.parse(localStorage.getItem('item'))['username'];
+        if (sessionStorage.getItem('item') != null) {
+            customerMail = JSON.parse(sessionStorage.getItem('item'))['email'];
+            username = JSON.parse(sessionStorage.getItem('item'))['username'];
 
         } else {
             customerMail = null;

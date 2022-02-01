@@ -21,8 +21,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public MessageResponse registerUser(@RequestBody SignupRequest signUpRequest){return authService.registerUser(signUpRequest);}
+    public MessageResponse registerUser(@RequestBody SignupRequest signUpRequest) {
+        return authService.registerUser(signUpRequest);
+    }
 
-   @PostMapping("/signin")
-   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){return authService.authenticateUser(loginRequest);}
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        return authService.authenticateUser(loginRequest);
+    }
 }

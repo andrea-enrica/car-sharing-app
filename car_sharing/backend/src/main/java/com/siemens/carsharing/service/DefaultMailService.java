@@ -13,8 +13,6 @@ public class DefaultMailService implements MailService{
 
     @Override
     public void sendMail(Mail mail) {
-//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(mail.getMailFrom());

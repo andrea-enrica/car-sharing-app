@@ -33,8 +33,8 @@ public class ReservationController {
         return reservationService.findReservationByIdUser(id_user);
     }
 
-    @GetMapping("/allReservationsByStatus")
-    public List<Reservation> getAllReservationsByStatus(final @RequestParam("id_car") Long id_car) {
+    @GetMapping("/allReservationsByIdCar")
+    public List<Reservation> getAllReservationsByIdCar(final @RequestParam("id_car") Long id_car) {
         return reservationService.findReservationByIdCar(id_car);
     }
 }

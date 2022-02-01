@@ -2,31 +2,25 @@ package com.siemens.carsharing.service;
 
 import com.siemens.carsharing.dto.UserData;
 import com.siemens.carsharing.model.User;
+import com.siemens.carsharing.repository.ReservationRepository;
 import com.siemens.carsharing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service("userService")
 public class DefaultUserService implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    public DefaultUserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     @Override
     public UserData saveUser(UserData user) {
         User userModel = populateUserEntity(user);
         return populateUserData(userRepository.save(userModel));
-    }
-
-    @Override
-    public boolean deleteUser(Long userId) {
-        return false;
-    }
-
-    @Override
-    public List<UserData> getAllUsers() {
-        return null;
     }
 
     @Override

@@ -1,60 +1,21 @@
-import React, {useState} from 'react';
-import {alpha, styled} from '@mui/material/styles';
+import React, {useEffect, useState} from 'react';
+import {styled} from '@mui/material/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import {Typography} from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
 import Box from '@mui/material/Box';
 import Link from "@mui/material/Link";
 import MuiAppBar from '@mui/material/AppBar';
-import InputBase from "@mui/material/InputBase";
-import logo from '../images/carz.png';
+import logo from '../images/Sharingry-logos_black-crop.png';
 import AppFooter from "./AppFooter";
+import SearchBar from "./SearchBar";
+import '../assets/i18n/i18n';
+import {useTranslation} from "react-i18next";
 
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
         flexGrow: 1,
     }),
 );
-
-const Search = styled('div')(({theme}) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.black, 0.05),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    }
-}));
-
-const SearchIconWrapper = styled('div')(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({theme}) => ({
-    color: 'black',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
-}));
 
 const BecomeHostButton = styled('button')(({theme}) => ({
     fontFamily: 'Playfair+Display',
@@ -82,14 +43,25 @@ const rightLink = {
     }
 };
 
-
 export default function Layout({children}) {
+    const {t, i18n} = useTranslation();
     const [open] = useState(false);
-    const [searchKeyword, setSearchKeyword] = useState('');
+    const [currentLanguage,setLanguage] =useState('');
 
-    function onChange(e) {
-        setSearchKeyword(e.target.value);
-        console.log(searchKeyword);
+    useEffect(() => {
+        i18n
+            .changeLanguage(sessionStorage.getItem("state"))
+            .then(() => setLanguage(sessionStorage.getItem("state")))
+            .catch(err => console.log(err));
+        console.log(sessionStorage.getItem("state"))
+    },[])
+
+    function handleBecomeHost() {
+        if(JSON.parse(sessionStorage.getItem('item')) === null) {
+            window.location.href ='/login';
+        } else {
+            window.location.href ='/addcar';
+        }
     }
 
     return (
@@ -101,37 +73,23 @@ export default function Layout({children}) {
                         <Link
                             underline="none"
                             href="/home"
-                            sx={{fontSize: 16, color: 'black', '&:hover': {
+                            sx={{fontSize: 16,
+                                color: 'black', '&:hover': {
                                     color: 'black'
-                                } }}
+                                    }
+                                }}
                         >
-                            <img src={logo} alt="logo"  width= "70px"
-                            height= "50px"
-                             />
+                            <img src={logo} alt="logo"  width= "100px"/>
                         </Link>
                     </Typography>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon/>
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{'aria-label': 'search'}}
-                            onChange={onChange}
-                        />
-                    </Search>
 
+                    <SearchBar/>
                     <Box sx={{flexGrow: 1}}/>
 
                     <Typography>
-                        <Link
-                            underline="none"
-                            href="/addcar"
-                        >
-                            <BecomeHostButton onClick={() => {}}>
-                                Become a host
-                            </BecomeHostButton>
-                        </Link>
+                        <BecomeHostButton onClick={() => { handleBecomeHost() }}>
+                            {t("become a host")}
+                        </BecomeHostButton>
                     </Typography>
 
                     <StyledLinks>
@@ -140,7 +98,7 @@ export default function Layout({children}) {
                             href="/login"
                             sx={rightLink}
                         >
-                            {'Log In'}
+                            {t("log in")}
                         </Link>
                     </StyledLinks>
 
@@ -150,7 +108,7 @@ export default function Layout({children}) {
                             href="/signup"
                             sx={rightLink}
                         >
-                            {'Sign Up'}
+                            {t("sign up")}
                         </Link>
                     </StyledLinks>
                 </Toolbar>
@@ -163,5 +121,5 @@ export default function Layout({children}) {
             {/* app footer */}
             <AppFooter/>
         </div>
-    )
+    );
 }

@@ -33,7 +33,6 @@ public class MailConfiguration {
         javaMailProperties.put("mail.debug", "true");
 
         javaMailProperties.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
-        //smtp.gmail.com
 
         mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;

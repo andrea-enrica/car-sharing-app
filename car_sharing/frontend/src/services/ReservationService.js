@@ -1,15 +1,14 @@
 import axios from "axios";
 
 const RESERVATION_REST_API_URL = 'http://localhost:8080/reservations/reservation';
-const RESERVATIONS_REST_API_URL = 'http://localhost:8080/reservations/allReservations';
 const RESERVATIONS_BY_USER_ID_REST_API_URL = 'http://localhost:8080/reservations/allReservationsByUserId';
-const RESERVATIONS_BY_STATUS_REST_API_URL = 'http://localhost:8080/reservations/allReservationsByStatus';
+const RESERVATIONS_BY_ID_CAR_REST_API_URL = 'http://localhost:8080/reservations/allReservationsByIdCar';
 
 class ReservationService{
     addReservationRequest(reservation){
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 
@@ -22,26 +21,10 @@ class ReservationService{
         });
     }
 
-    getAllReservations() {
-        let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
-        else
-            token = null
-
-        return axios.get( RESERVATIONS_REST_API_URL, {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                'Authorization': 'Bearer ' + token
-            }, mode: 'no-cors'
-        });
-    }
-
     getAllReservationsByUserId(idUser) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
 
@@ -56,11 +39,11 @@ class ReservationService{
 
     getReservationByIdCar(id_car) {
         let token
-        if (localStorage.getItem('item') != null)
-            token = JSON.parse(localStorage.getItem('item'))['accessToken']
+        if (sessionStorage.getItem('item') != null)
+            token = JSON.parse(sessionStorage.getItem('item'))['accessToken']
         else
             token = null
-        return axios.get( RESERVATIONS_BY_STATUS_REST_API_URL  + "?id_car=" + id_car, {
+        return axios.get( RESERVATIONS_BY_ID_CAR_REST_API_URL  + "?id_car=" + id_car, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -69,7 +52,5 @@ class ReservationService{
             }, mode: 'no-cors'
         });
     }
-
-
 }
 export default new ReservationService();

@@ -12,7 +12,8 @@
     "reactstrap": "^8.10.0"
   },
   "devDependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "react-native-i18n": "^2.0.15"
   },
   "proxy": "http://localhost:8080"
 }

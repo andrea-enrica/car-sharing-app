@@ -15,8 +15,7 @@ public class ReservationData {
 
     private String status;
 
-    public ReservationData(Long id_reservation, Long idCar, Long idUser, String start_date, String start_time, String end_date, String end_time, Double total_reservation_price, String payment_method, String city, String address, String status) {
-        this.id_reservation = id_reservation;
+    public ReservationData(Long idCar, Long idUser, String start_date, String start_time, String end_date, String end_time, Double total_reservation_price, String payment_method, String city, String address, String status) {
         this.idCar = idCar;
         this.idUser = idUser;
         this.start_date = start_date;
@@ -25,9 +24,9 @@ public class ReservationData {
         this.end_time = end_time;
         this.total_reservation_price = total_reservation_price;
         this.payment_method = payment_method;
-        this.city=city;
-        this.address=address;
-        this.status=status;
+        this.city = city;
+        this.address = address;
+        this.status = status;
     }
 
     public ReservationData() {
@@ -106,9 +105,13 @@ public class ReservationData {
         this.payment_method = payment_method;
     }
 
-    public String getStatus() {return status;}
+    public String getStatus() {
+        return status;
+    }
 
-    public void setStatus(String status) {this.status = status;}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getCity() {
         return city;
