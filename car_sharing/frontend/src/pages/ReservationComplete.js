@@ -3,7 +3,7 @@ import React from 'react';
 import {useTranslation} from "react-i18next";
 
 export default function ReservationComplete() {
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     return(
 
         <Container component="section" sx={{

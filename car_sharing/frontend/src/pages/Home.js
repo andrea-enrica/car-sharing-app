@@ -13,8 +13,7 @@ import {useLocation} from "react-router-dom";
 export default function Home() {
     const [cars, setCars] = useState([]);
     const {t, i18n} = useTranslation();
-    const [currentLanguage,setLanguage] =useState('');
-    const [keyword , setKeyword] =  useState("");
+    const [,setLanguage] =useState('');
     const location = useLocation();
     let loc= "";
 
@@ -29,18 +28,14 @@ export default function Home() {
             .changeLanguage(sessionStorage.getItem("state"))
             .then(() => setLanguage(sessionStorage.getItem("state")))
             .catch(err => console.log(err));
-    },[])
-
-    useEffect(() => {
-        console.log(keyword);
-    }, [keyword])
+    },[i18n])
 
     useEffect(() => {
         const getCars = async () => {
             const res = await CarService.cardDisplayRequest();
             setCars(res.data);
-            getCars().then(r => r);
         };
+        getCars().then(r => r);
     }, [cars]);
 
     return (

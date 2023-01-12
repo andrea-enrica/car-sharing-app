@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +9,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from "@mui/material/Container";
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import {useEffect, useState} from "react";
 import CarService from "../services/CarService";
 import IconButton from "@mui/material/IconButton";
 import ReservationService from "../services/ReservationService";
@@ -24,12 +24,6 @@ export default function MyReservations() {
             setReservationDetails(res.data);
         });
     }
-
-    let reservationStatusChangeIcon =
-        (<IconButton style={{color: "red"}} onClick={() => {}}  >
-                <ChangeCircleIcon/>
-            </IconButton>
-        );
 
     useEffect(() => {
         getReservationDetails(id_user).then();

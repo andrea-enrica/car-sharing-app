@@ -14,7 +14,7 @@ import CarService from "../services/CarService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as Yup from "yup";
 import {useForm} from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import UploadFilesService from "../services/FileService"
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import {carBrandsList} from "../data/CarBrands";
@@ -51,7 +51,6 @@ export default function BecomeHost() {
             .changeLanguage(sessionStorage.getItem("state"))
             .then(() => setLanguage(sessionStorage.getItem("state")))
             .catch(err => console.log(err));
-        console.log(sessionStorage.getItem("state"))
     },[])
 
     const callBackArray = (arrayFromChild) => {

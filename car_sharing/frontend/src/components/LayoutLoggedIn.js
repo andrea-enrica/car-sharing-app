@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import "../App.css";
 import {styled, useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -14,7 +15,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Link from "@mui/material/Link";
-import {useEffect, useState} from "react";
 import logo from '../images/Sharingry-logos_black-crop.png';
 import AppFooter from "../components/AppFooter";
 import {useHistory} from "react-router-dom";
@@ -66,7 +66,7 @@ export default function LayoutLoggedIn({children}) {
     const theme = useTheme();
     const history = useHistory();
     const {t, i18n} = useTranslation();
-    const [currentLanguage,setLanguage] =useState('');
+    const [,setLanguage] =useState('');
     const [open, setOpen] = useState(false);
     const [isLogout, setIsLogout] = useState(false);
 
@@ -75,8 +75,7 @@ export default function LayoutLoggedIn({children}) {
             .changeLanguage(sessionStorage.getItem("state"))
             .then(() => setLanguage(sessionStorage.getItem("state")))
             .catch(err => console.log(err));
-        console.log(sessionStorage.getItem("state"))
-    },[])
+    },[i18n])
 
     const handleDrawerOpen = () => {
         setOpen(true);

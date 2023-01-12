@@ -46,15 +46,14 @@ const rightLink = {
 export default function Layout({children}) {
     const {t, i18n} = useTranslation();
     const [open] = useState(false);
-    const [currentLanguage,setLanguage] =useState('');
+    const [,setLanguage] =useState('');
 
     useEffect(() => {
         i18n
             .changeLanguage(sessionStorage.getItem("state"))
             .then(() => setLanguage(sessionStorage.getItem("state")))
             .catch(err => console.log(err));
-        console.log(sessionStorage.getItem("state"))
-    },[])
+    },[i18n])
 
     function handleBecomeHost() {
         if(JSON.parse(sessionStorage.getItem('item')) === null) {

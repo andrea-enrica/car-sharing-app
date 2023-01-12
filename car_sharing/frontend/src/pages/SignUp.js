@@ -21,15 +21,14 @@ export default function SignUp() {
     const [hasServerError, setHasServerError] = useState(false);
     let [isJustSaved, setIsJustSaved] = useState(false);
     const {t, i18n} = useTranslation();
-    const [currentLanguage,setLanguage] =useState('');
+    const [,setLanguage] =useState('');
 
     useEffect(() => {
         i18n
             .changeLanguage(sessionStorage.getItem("state"))
             .then(() => setLanguage(sessionStorage.getItem("state")))
             .catch(err => console.log(err));
-        console.log(sessionStorage.getItem("state"))
-    },[])
+    },[i18n])
 
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().required('First Name is required'),

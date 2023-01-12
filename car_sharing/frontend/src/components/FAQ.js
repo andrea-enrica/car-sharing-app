@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import {useTranslation} from "react-i18next";
 
 export default function SimpleAccordion() {
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   return (
       <Container component="section" sx={{  mt: 2, mb: 4, mr: 20, ml: 20}}      position={"relative"}

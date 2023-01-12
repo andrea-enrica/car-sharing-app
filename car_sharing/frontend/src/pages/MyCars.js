@@ -9,39 +9,17 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from "@mui/material/Container";
 import CarService from "../services/CarService";
-import {alpha, createMuiTheme, FormControlLabel, styled, Switch} from "@material-ui/core";
-import {green, pink, teal} from "@material-ui/core/colors";
+import {alpha, styled, Switch} from "@material-ui/core";
 
-const Android12Switch = styled(Switch)(({ theme }) => ({
-    padding: 8,
-    '& .MuiSwitch-track': {
-        borderRadius: 22 / 2,
-        '&:before, &:after': {
-            content: '""',
-            position: 'absolute',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: 16,
-            height: 16,
-        },
-        '&:before': {
-            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                theme.palette.getContrastText(theme.palette.primary.main),
-            )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-            left: 12,
-        },
-        '&:after': {
-            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                theme.palette.getContrastText(theme.palette.primary.main),
-            )}" d="M19,13H5V11H19V13Z" /></svg>')`,
-            right: 12,
+const GreenSwitch = styled(Switch)(({ theme }) => ({
+    '& .MuiSwitch-switchBase.Mui-checked': {
+        color: '#00796b',
+        '&:hover': {
+            backgroundColor: alpha('#00796b', theme.palette.action.hoverOpacity),
         },
     },
-    '& .MuiSwitch-thumb': {
-        boxShadow: 'none',
-        width: 16,
-        height: 16,
-        margin: 2,
+    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+        backgroundColor: '#00796b',
     },
 }));
 
@@ -58,7 +36,7 @@ export default function MyCars() {
         getCars(id_user).then(r => {
             setRows(r.data);
         })
-    },[]);
+    },[id_user]);
 
     const handleVisibility = (row) => {
         if(row.available === "false") {
@@ -73,43 +51,6 @@ export default function MyCars() {
             });
         }
     }
-    const theme = createMuiTheme({
-        overrides: {
-            MuiSwitch: {
-                switchBase: {
-                    // Controls default (unchecked) color for the thumb
-                    color: "#011"
-                },
-                colorSecondary: {
-                    "&$checked": {
-                        // Controls checked color for the thumb
-                        color: "#011"
-                    }
-                },
-                track: {
-                    // Controls default (unchecked) color for the track
-                    opacity: 0.2,
-                    backgroundColor: "#011",
-                    "$checked$checked + &": {
-                        // Controls checked color for the track
-                        opacity: 0.7,
-                        backgroundColor: "#011"
-                    }
-                }
-            }
-        }
-    });
-    const GreenSwitch = styled(Switch)(({ theme }) => ({
-        '& .MuiSwitch-switchBase.Mui-checked': {
-            color: '#00796b',
-            '&:hover': {
-                backgroundColor: alpha('#00796b', theme.palette.action.hoverOpacity),
-            },
-        },
-        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-            backgroundColor: '#00796b',
-        },
-    }));
 
     const label = { inputProps: { 'aria-label': 'Switch demo' } };
     return (

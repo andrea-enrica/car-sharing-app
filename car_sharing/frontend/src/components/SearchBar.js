@@ -63,7 +63,7 @@ const SearchBar = () => {
 
     const history= useHistory();
     const handleKeyPress = (e) =>{
-        if (e.charCode == 13) {
+        if (e.charCode === 13) {
             history.push("/home",{searchKeyword:searchKeyword});
             window.location.reload();
         }

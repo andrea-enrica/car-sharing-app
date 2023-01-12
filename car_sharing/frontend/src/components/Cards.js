@@ -17,30 +17,28 @@ import {useTranslation} from "react-i18next";
 import SearchBarService from "../services/SearchBarService";
 
 export default function CarDisplayCard({keyWord}){
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const [cars, setCars] = useState([]);
     const [availableCars, setAvailableCars] = useState([]);
     const [files, setFiles] = useState([]);
-    let flag  = false;
 
     useEffect(() => {
         if(keyWord !== "" ){
-            flag = true;
-        async function getCarsByKeyword() {
-            await SearchBarService.getSearchRequest(keyWord).then(res => {
-                setCars(res.data);
+            async function getCarsByKeyword() {
+                await SearchBarService.getSearchRequest(keyWord).then(res => {
+                    setCars(res.data);
             });
         }
-        getCarsByKeyword();
+        getCarsByKeyword().then(r => r);
+        } else {
+            async function getCars() {
+                await CarService.cardDisplayRequest().then(res => {
+                    setCars(res.data);
+                });
             }
-        else {
-        async function getCars() {
-            await CarService.cardDisplayRequest().then(res => {
-                setCars(res.data);
-            });
-        }
         getCars().then();
-    } },[]);
+        }
+    },[]);
 
     useEffect(() => {
         let arrayOfCars = [...availableCars];
@@ -77,7 +75,7 @@ export default function CarDisplayCard({keyWord}){
                 }
             }
         }
-        getFiles();
+        getFiles().then(r => r);
     },[cars])
 
     useEffect(() => {

@@ -86,24 +86,5 @@ class FileService {
             mode: 'no-cors'
         });
     }
-
-
-    getFileByName(filename){
-        let token
-        if(sessionStorage.getItem('item') != null)
-        {
-            token = JSON.parse(sessionStorage.getItem('item'))['accessToken'];
-        }
-        else
-            token = null;
-        return axios.get("http://localhost:8080/pictures/files/" + filename,{
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Accept": "multipart/form-data",
-                'Authorization': 'Bearer ' + token,
-            },
-            mode: 'no-cors'
-        });
-    }
 }
 export default new FileService();

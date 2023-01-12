@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
@@ -8,7 +9,6 @@ import facebookIcon from '../images/facebook.png';
 import instagramIcon from '../images/instagram.png';
 import twitterIcon from '../images/twitter.png';
 import {useTranslation} from "react-i18next";
-import {useState} from "react";
 import LanguageIcon from '@mui/icons-material/Language';
 import Button from "@mui/material/Button";
 import '../assets/i18n/i18n';
@@ -40,8 +40,8 @@ const iconStyle = {
 
 export default function AppFooter() {
 
-    const {t, i18n} = useTranslation();
-    const [currentLanguage,setLanguage] =useState('en');
+    const {i18n} = useTranslation();
+    const [setLanguage] =useState('en');
     const [prevState, setPrevState] = useState("true");
 
     const changeLanguage = () => {

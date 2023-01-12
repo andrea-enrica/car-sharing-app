@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const SIGNUP_REST_API_URL = 'http://localhost:8080/api/auth/signup';
 const LOGIN_REST_API_URL = 'http://localhost:8080/api/auth/signin';
 const USER_BY_ID_REST_API_URL = 'http://localhost:8080/users/userById';

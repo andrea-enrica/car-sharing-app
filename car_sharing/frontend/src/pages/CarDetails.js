@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -7,15 +8,9 @@ import TimePicker from '@mui/lab/TimePicker';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import {Container} from "reactstrap";
 import Button from '@mui/material/Button';
-import {TextareaAutosize} from "@material-ui/core";
 import {Alert, Box, Snackbar} from "@mui/material";
 import {useHistory, useLocation} from "react-router-dom";
-import {useEffect, useState} from "react";
 import ReservationService from "../services/ReservationService";
-import isDisabled from "react-native-web/dist/modules/AccessibilityUtil/isDisabled";
-import {addDays, format, isValid, subDays} from "date-fns";
-import CarService from "../services/CarService";
-import {toBeDisabled} from "@testing-library/jest-dom/dist/matchers";
 import moment from "moment";
 import UserService from "../services/UserService";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -141,11 +136,8 @@ export default function CarDetails(){
 
     function disableDays(date) {
         if(startDatesToDisable !== undefined)
-        {   let i = 0
+        {
             require('moment-range').extendMoment(moment);
-
-            const start = new Date("1/30/2022"), end = new Date("2/2/2022")
-            // const range = moment.range(moment(start), moment(end));
             let dateStr = []
             for(let i = 0 ; i < startDatesToDisable.length; i++)
             {
@@ -154,14 +146,10 @@ export default function CarDetails(){
                 }
                 dateStr.push(moment(endDatesToDisable[i]).format('M/D/YYYY'))
             }
-
-            return date.toLocaleDateString() == dateStr.filter(myDate => myDate == date.toLocaleDateString())
+            return date.toLocaleDateString() === dateStr.filter(myDate => myDate === date.toLocaleDateString())
         }
         else return false
     }
-
-    const valueOfTextField = "Model " + car.model + "\n" + "Brand " + car.brand + "\n";
-
     function handleCancelClick() {
         setDateStart(new Date());
         setDateEnd(new Date());
@@ -172,9 +160,7 @@ export default function CarDetails(){
     }
 
     return (
-
         <Container component="main" style={{width: "70%", height:"100%"}}>
-
             <CssBaseline/>
             <CarouselCarDetails keyWord={car} />
             <Box sx={{marginTop: 10, display: 'flex', flexDirection: 'row', marginLeft: 25}} position={"relative"}>
